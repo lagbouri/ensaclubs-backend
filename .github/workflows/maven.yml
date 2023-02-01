@@ -28,4 +28,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -DskipTests
+      run: mvn clean install -DskipTests
+    - name: Publish to Docker Hub
+      uses: docker/build-push-action@v2
+      with:
+       username: ${{ secrets.DOCKER_HUB_USERNAME }}
+       password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+       repository: justyoussef/images
+       tags: ${{github.run_number}}
